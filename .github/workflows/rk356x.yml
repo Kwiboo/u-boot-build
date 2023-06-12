@@ -23,6 +23,11 @@ jobs:
         boards:
           [
             {
+              "name": "rk3566-pinenote",
+              "config": "pinenote-rk3566_defconfig",
+              "variant": "RK3566",
+            },
+            {
               "name": "rk3566-pinetab2",
               "config": "pinetab2-rk3566_defconfig",
               "variant": "RK3566",
