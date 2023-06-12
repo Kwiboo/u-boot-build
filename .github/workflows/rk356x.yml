@@ -1,0 +1,130 @@
+name: Build u-boot for RK356x
+run-name: u-boot ${{ inputs.uboot_ref }} for RK356x
+on:
+  workflow_dispatch:
+    inputs:
+      uboot_ref:
+        description: u-boot ref
+        required: true
+        default: rk3568-2023.07
+        type: string
+      rkbin_ref:
+        description: rkbin ref
+        required: true
+        default: master
+        type: string
+
+jobs:
+  build:
+    name: ${{ matrix.boards.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        boards:
+          [
+            {
+              "name": "rk3566-pinetab2",
+              "config": "pinetab2-rk3566_defconfig",
+              "variant": "RK3566",
+            },
+            {
+              "name": "rk3566-quartz64-a",
+              "config": "quartz64-a-rk3566_defconfig",
+              "variant": "RK3566",
+            },
+            {
+              "name": "rk3566-quartz64-b",
+              "config": "quartz64-b-rk3566_defconfig",
+              "variant": "RK3566",
+            },
+            {
+              "name": "rk3566-radxa-cm3-io",
+              "config": "radxa-cm3-io-rk3566_defconfig",
+              "variant": "RK3566",
+            },
+            {
+              "name": "rk3566-soquartz-blade",
+              "config": "soquartz-blade-rk3566_defconfig",
+              "variant": "RK3566",
+            },
+            {
+              "name": "rk3566-soquartz-cm4",
+              "config": "soquartz-cm4-rk3566_defconfig",
+              "variant": "RK3566",
+            },
+            {
+              "name": "rk3566-soquartz-model-a",
+              "config": "soquartz-model-a-rk3566_defconfig",
+              "variant": "RK3566",
+            },
+            {
+              "name": "rk3568-odroid-m1",
+              "config": "odroid-m1-rk3568_defconfig",
+              "variant": "RK3568",
+            },
+            {
+              "name": "rk3568-radxa-e25",
+              "config": "radxa-e25-rk3568_defconfig",
+              "variant": "RK3568",
+            },
+            {
+              "name": "rk3568-rock-3a",
+              "config": "rock-3a-rk3568_defconfig",
+              "variant": "RK3568",
+            },
+          ]
+
+    steps:
+      - name: Toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install gcc-12 gcc-12-aarch64-linux-gnu python3-pyelftools confget
+
+          sudo ln -sf cpp-12 /usr/bin/cpp
+          sudo ln -sf gcc-12 /usr/bin/gcc
+          sudo ln -sf gcc-ar-12 /usr/bin/gcc-ar
+          sudo ln -sf gcc-nm-12 /usr/bin/gcc-nm
+          sudo ln -sf gcc-ranlib-12 /usr/bin/gcc-ranlib
+          sudo ln -sf gcov-12 /usr/bin/gcov
+          sudo ln -sf gcov-dump-12 /usr/bin/gcov-dump
+          sudo ln -sf gcov-tool-12 /usr/bin/gcov-tool
+
+          sudo ln -sf aarch64-linux-gnu-cpp-12 /usr/bin/aarch64-linux-gnu-cpp
+          sudo ln -sf aarch64-linux-gnu-gcc-12 /usr/bin/aarch64-linux-gnu-gcc
+          sudo ln -sf aarch64-linux-gnu-gcc-ar-12 /usr/bin/aarch64-linux-gnu-gcc-ar
+          sudo ln -sf aarch64-linux-gnu-gcc-nm-12 /usr/bin/aarch64-linux-gnu-gcc-nm
+          sudo ln -sf aarch64-linux-gnu-gcc-ranlib-12 /usr/bin/aarch64-linux-gnu-gcc-ranlib
+          sudo ln -sf aarch64-linux-gnu-gcov-12 /usr/bin/aarch64-linux-gnu-gcov
+          sudo ln -sf aarch64-linux-gnu-gcov-dump-12 /usr/bin/aarch64-linux-gnu-gcov-dump
+          sudo ln -sf aarch64-linux-gnu-gcov-tool-12 /usr/bin/aarch64-linux-gnu-gcov-tool
+
+      - name: Checkout rkbin - ${{ inputs.rkbin_ref }}
+        uses: actions/checkout@v3
+        with:
+          repository: rockchip-linux/rkbin
+          ref: ${{ inputs.rkbin_ref }}
+          path: rkbin
+
+      - name: Checkout u-boot - ${{ inputs.uboot_ref }}
+        uses: actions/checkout@v3
+        with:
+          repository: Kwiboo/u-boot-rockchip
+          ref: ${{ inputs.uboot_ref }}
+          path: u-boot
+
+      - name: Build u-boot - ${{ matrix.boards.config }}
+        run: |
+          export ROCKCHIP_TPL=../rkbin/$(confget -f rkbin/RKBOOT/${{ matrix.boards.variant }}MINIALL.ini -s LOADER_OPTION FlashData)
+          export BL31=../rkbin/$(confget -f rkbin/RKTRUST/RK3568TRUST.ini -s BL31_OPTION PATH)
+          cd u-boot
+          make mrproper
+          make CROSS_COMPILE=aarch64-linux-gnu- ${{ matrix.boards.config }}
+          make CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc)
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.boards.name }}
+          path: |
+            u-boot/u-boot-rockchip.bin
+            u-boot/u-boot-rockchip-spi.bin
