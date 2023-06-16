@@ -26,6 +26,15 @@ Write the `u-boot-rockchip.bin` image to sector 64 of a SD card or eMMC module (
 dd if=u-boot-rockchip.bin of=/dev/mmcblk0 bs=32k seek=1 conv=fsync
 ```
 
+Or in case the device is in the MaskROM you can use the `rkdeveloptool`:
+```
+rkdeveloptool write 64 u-boot-rockchip.bin
+```
+
+This is useful for devices such as Pinenote.
+
+The source code for the  tool can be obtained form [here](https://gitlab.com/pine64-org/quartz-bsp/rkdeveloptool)
+
 ### SPI flash
 
 Write the `u-boot-rockchip-spi.bin` image to begining of SPI flash (assumed to be /dev/mtd0) using `flashcp`:
