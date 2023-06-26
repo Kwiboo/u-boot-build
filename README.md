@@ -45,3 +45,17 @@ load mmc 1:1 10000000 u-boot-rockchip-spi.bin
 
 sf update $fileaddr 0 $filesize
 ```
+
+Erase U-Boot from SPI flash (assumed to be /dev/mtd0) using `flash_erase`:
+
+```
+flash_erase /dev/mtd0 0 1
+```
+
+Or erase using U-Boot cmdline:
+
+```
+sf probe
+
+sf erase 0 +200
+```
