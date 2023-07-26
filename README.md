@@ -26,6 +26,21 @@ Write the `u-boot-rockchip.bin` image to sector 64 of a SD card or eMMC module (
 dd if=u-boot-rockchip.bin of=/dev/mmcblk0 bs=32k seek=1 conv=fsync
 ```
 
+#### eMMC using U-Boot cmdline
+
+- Put `u-boot-rockchip.bin` on first partition of a SD card.
+- Run from U-Boot cmdline:
+```
+# Read u-boot-rockchip.bin from first partition of a SD card
+load mmc 1:1 10000000 u-boot-rockchip.bin
+
+# Change to eMMC
+mmc dev 0
+
+# Write 10 MiB (0x5000 blocks) at sector 64 (0x40)
+mmc write $fileaddr 40 5000
+```
+
 ### SPI flash
 
 Write the `u-boot-rockchip-spi.bin` image to begining of SPI flash (assumed to be /dev/mtd0) using `flashcp`:
@@ -39,23 +54,28 @@ Or using U-Boot cmdline:
 - Put `u-boot-rockchip-spi.bin` on first partition of a SD card.
 - Run from U-Boot cmdline:
 ```
+# Initialize SPI flash
 sf probe
 
+# Read u-boot-rockchip-spi.bin from first partition of a SD card
 load mmc 1:1 10000000 u-boot-rockchip-spi.bin
 
+# Write to begining of SPI flash
 sf update $fileaddr 0 $filesize
 ```
 
 Erase U-Boot from SPI flash (assumed to be /dev/mtd0) using `flash_erase`:
 
 ```
-flash_erase /dev/mtd0 0 1
+flash_erase /dev/mtd0 0 16
 ```
 
 Or erase using U-Boot cmdline:
 
 ```
+# Initialize SPI flash
 sf probe
 
-sf erase 0 +200
+# Erase first 64 KiB (0x10000 bytes) of SPI flash
+sf erase 0 +10000
 ```
