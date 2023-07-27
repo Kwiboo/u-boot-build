@@ -6,7 +6,7 @@ on:
       uboot_ref:
         description: u-boot ref
         required: true
-        default: rk3568-2023.07
+        default: rk3568-2023.10
         type: string
       rkbin_ref:
         description: rkbin ref
@@ -71,6 +71,7 @@ jobs:
               "name": "rk3568-radxa-e25",
               "config": "radxa-e25-rk3568_defconfig",
               "variant": "RK3568",
+              "baudrate": "115200",
             },
             {
               "name": "rk3568-rock-3a",
@@ -119,7 +120,11 @@ jobs:
 
       - name: Build u-boot - ${{ matrix.boards.config }}
         run: |
-          export ROCKCHIP_TPL=../rkbin/$(confget -f rkbin/RKBOOT/${{ matrix.boards.variant }}MINIALL.ini -s LOADER_OPTION FlashData)
+          DDRBIN=$(confget -f rkbin/RKBOOT/${{ matrix.boards.variant }}MINIALL.ini -s LOADER_OPTION FlashData)
+          sed -i 's/uart baudrate=/uart baudrate=${{ matrix.boards.baudrate }}/' rkbin/tools/ddrbin_param.txt
+          sed -i 's/dis_train_print=/dis_train_print=1/' rkbin/tools/ddrbin_param.txt
+          rkbin/tools/ddrbin_tool rkbin/tools/ddrbin_param.txt $DDRBIN
+          export ROCKCHIP_TPL=../rkbin/$DDRBIN
           export BL31=../rkbin/$(confget -f rkbin/RKTRUST/RK3568TRUST.ini -s BL31_OPTION PATH)
           cd u-boot
           make mrproper
