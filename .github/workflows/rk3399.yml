@@ -23,6 +23,10 @@ jobs:
         boards:
           [
             {
+              "name": "rk3399-pinebook-pro",
+              "config": "pinebook-pro-rk3399_defconfig",
+            },
+            {
               "name": "rk3399-rock-4c-plus",
               "config": "rock-4c-plus-rk3399_defconfig",
             },

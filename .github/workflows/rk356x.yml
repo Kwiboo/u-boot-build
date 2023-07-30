@@ -48,6 +48,11 @@ jobs:
               "variant": "RK3566",
             },
             {
+              "name": "rk3566-rock-3c",
+              "config": "rock-3c-rk3566_defconfig",
+              "variant": "RK3566",
+            },
+            {
               "name": "rk3566-soquartz-blade",
               "config": "soquartz-blade-rk3566_defconfig",
               "variant": "RK3566",
@@ -61,6 +66,16 @@ jobs:
               "name": "rk3566-soquartz-model-a",
               "config": "soquartz-model-a-rk3566_defconfig",
               "variant": "RK3566",
+            },
+            {
+              "name": "rk3568-nanopi-r5c",
+              "config": "nanopi-r5c-rk3568_defconfig",
+              "variant": "RK3568",
+            },
+            {
+              "name": "rk3568-nanopi-r5s",
+              "config": "nanopi-r5s-rk3568_defconfig",
+              "variant": "RK3568",
             },
             {
               "name": "rk3568-odroid-m1",
