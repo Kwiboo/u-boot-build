@@ -4,6 +4,7 @@ GitHub Actions workflows to build u-boot for a few Rockchip boards.
 [![Build u-boot for RK3328](https://github.com/Kwiboo/u-boot-build/actions/workflows/rk3328.yml/badge.svg)](https://github.com/Kwiboo/u-boot-build/actions/workflows/rk3328.yml)
 [![Build u-boot for RK3399](https://github.com/Kwiboo/u-boot-build/actions/workflows/rk3399.yml/badge.svg)](https://github.com/Kwiboo/u-boot-build/actions/workflows/rk3399.yml)
 [![Build u-boot for RK356x](https://github.com/Kwiboo/u-boot-build/actions/workflows/rk356x.yml/badge.svg)](https://github.com/Kwiboo/u-boot-build/actions/workflows/rk356x.yml)
+[![Build u-boot for RK3588](https://github.com/Kwiboo/u-boot-build/actions/workflows/rk3588.yml/badge.svg)](https://github.com/Kwiboo/u-boot-build/actions/workflows/rk3588.yml)
 
 ### Source repositories
 
