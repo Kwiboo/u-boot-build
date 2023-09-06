@@ -76,8 +76,8 @@ jobs:
           export BL31=../rkbin/$(confget -f rkbin/RKTRUST/RK3588TRUST.ini -s BL31_OPTION PATH)
           cd u-boot
           make mrproper
-          make CROSS_COMPILE=aarch64-linux-gnu- ${{ matrix.boards.config }}
-          make CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc)
+          make ${{ matrix.boards.config }}
+          make KCFLAGS="-fno-peephole2" CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc)
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
