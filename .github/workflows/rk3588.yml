@@ -23,6 +23,18 @@ jobs:
         boards:
           [
             {
+              "name": "rk3588-nanopc-t6",
+              "config": "nanopc-t6-rk3588_defconfig",
+            },
+            {
+              "name": "rk3588s-orangepi-5",
+              "config": "orangepi-5-rk3588s_defconfig",
+            },
+            {
+              "name": "rk3588-orangepi-5-plus",
+              "config": "orangepi-5-plus-rk3588_defconfig",
+            },
+            {
               "name": "rk3588s-rock-5a",
               "config": "rock5a-rk3588s_defconfig",
             },

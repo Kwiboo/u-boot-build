@@ -23,6 +23,16 @@ jobs:
         boards:
           [
             {
+              "name": "rk3566-generic",
+              "config": "generic-rk3568_defconfig",
+              "variant": "RK3566",
+            },
+            {
+              "name": "rk3566-orangepi-3b",
+              "config": "orangepi-3b-rk3566_defconfig",
+              "variant": "RK3566",
+            },
+            {
               "name": "rk3566-pinenote",
               "config": "pinenote-rk3566_defconfig",
               "variant": "RK3566",
@@ -66,6 +76,16 @@ jobs:
               "name": "rk3566-soquartz-model-a",
               "config": "soquartz-model-a-rk3566_defconfig",
               "variant": "RK3566",
+            },
+            {
+              "name": "rk3568-bpi-r2-pro",
+              "config": "bpi-r2-pro-rk3568_defconfig",
+              "variant": "RK3568",
+            },
+            {
+              "name": "rk3568-generic",
+              "config": "generic-rk3568_defconfig",
+              "variant": "RK3568",
             },
             {
               "name": "rk3568-nanopi-r5c",
