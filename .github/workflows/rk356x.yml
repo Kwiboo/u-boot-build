@@ -6,7 +6,7 @@ on:
       uboot_ref:
         description: u-boot ref
         required: true
-        default: rk3568-2023.10
+        default: master
         type: string
       rkbin_ref:
         description: rkbin ref
@@ -119,7 +119,7 @@ jobs:
       - name: Toolchain
         run: |
           sudo apt-get update
-          sudo apt-get install gcc-12 gcc-12-aarch64-linux-gnu python3-pyelftools confget
+          sudo apt-get install gcc-12 gcc-12-aarch64-linux-gnu python3-pyelftools confget libgnutls28-dev
 
           sudo ln -sf cpp-12 /usr/bin/cpp
           sudo ln -sf gcc-12 /usr/bin/gcc
@@ -140,14 +140,14 @@ jobs:
           sudo ln -sf aarch64-linux-gnu-gcov-tool-12 /usr/bin/aarch64-linux-gnu-gcov-tool
 
       - name: Checkout rkbin - ${{ inputs.rkbin_ref }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: rockchip-linux/rkbin
           ref: ${{ inputs.rkbin_ref }}
           path: rkbin
 
       - name: Checkout u-boot - ${{ inputs.uboot_ref }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: Kwiboo/u-boot-rockchip
           ref: ${{ inputs.uboot_ref }}
@@ -158,16 +158,18 @@ jobs:
           DDRBIN=$(confget -f rkbin/RKBOOT/${{ matrix.boards.variant }}MINIALL.ini -s LOADER_OPTION FlashData)
           sed -i 's/uart baudrate=/uart baudrate=${{ matrix.boards.baudrate }}/' rkbin/tools/ddrbin_param.txt
           sed -i 's/dis_train_print=/dis_train_print=1/' rkbin/tools/ddrbin_param.txt
-          rkbin/tools/ddrbin_tool rkbin/tools/ddrbin_param.txt rkbin/$DDRBIN
+          SOC=$(echo "${{ matrix.boards.variant }}" | tr '[:upper:]' '[:lower:]')
+          rkbin/tools/ddrbin_tool $SOC rkbin/tools/ddrbin_param.txt rkbin/$DDRBIN
           export ROCKCHIP_TPL=../rkbin/$DDRBIN
           export BL31=../rkbin/$(confget -f rkbin/RKTRUST/RK3568TRUST.ini -s BL31_OPTION PATH)
           cd u-boot
           make mrproper
           make ${{ matrix.boards.config }}
-          make KCFLAGS="-fno-peephole2" CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc)
+          make KCFLAGS="-Werror" CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc)
+          tools/mkimage -l u-boot.itb
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.boards.name }}
           path: |

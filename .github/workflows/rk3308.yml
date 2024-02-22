@@ -6,7 +6,7 @@ on:
       uboot_ref:
         description: u-boot ref
         required: true
-        default: rk3308-2024.04
+        default: master
         type: string
       rkbin_ref:
         description: rkbin ref
@@ -42,7 +42,7 @@ jobs:
       - name: Toolchain
         run: |
           sudo apt-get update
-          sudo apt-get install gcc-12 gcc-12-aarch64-linux-gnu python3-pyelftools confget
+          sudo apt-get install gcc-12 gcc-12-aarch64-linux-gnu python3-pyelftools confget libgnutls28-dev
 
           sudo ln -sf cpp-12 /usr/bin/cpp
           sudo ln -sf gcc-12 /usr/bin/gcc
@@ -88,7 +88,8 @@ jobs:
           cd u-boot
           make mrproper
           make ${{ matrix.boards.config }}
-          make CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc)
+          make KCFLAGS="-Werror" CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc)
+          tools/mkimage -l u-boot.itb
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
