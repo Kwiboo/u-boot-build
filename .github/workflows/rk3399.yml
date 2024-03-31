@@ -23,16 +23,56 @@ jobs:
         boards:
           [
             {
+              "name": "rk3399-generic",
+              "config": "generic-rk3399_defconfig",
+            },
+            {
+              "name": "rk3399-khadas-edge",
+              "config": "khadas-edge-rk3399_defconfig",
+            },
+            {
+              "name": "rk3399-khadas-edge-captain",
+              "config": "khadas-edge-captain-rk3399_defconfig",
+            },
+            {
+              "name": "rk3399-khadas-edge-v",
+              "config": "khadas-edge-v-rk3399_defconfig",
+            },
+            {
+              "name": "rk3399-nanopc-t4",
+              "config": "nanopc-t4-rk3399_defconfig",
+            },
+            {
+              "name": "rk3399-nanopi-r4s",
+              "config": "nanopi-r4s-rk3399_defconfig",
+            },
+            {
               "name": "rk3399-pinebook-pro",
               "config": "pinebook-pro-rk3399_defconfig",
+            },
+            {
+              "name": "rk3399-pinephone-pro",
+              "config": "pinephone-pro-rk3399_defconfig",
             },
             {
               "name": "rk3399-rock-4c-plus",
               "config": "rock-4c-plus-rk3399_defconfig",
             },
             {
+              "name": "rk3399-rock-4se",
+              "config": "rock-4se-rk3399_defconfig",
+            },
+            {
+              "name": "rk3399-rock960",
+              "config": "rock960-rk3399_defconfig",
+            },
+            {
               "name": "rk3399-rock-pi-4",
               "config": "rock-pi-4-rk3399_defconfig",
+            },
+            {
+              "name": "rk3399-rock-pi-4c",
+              "config": "rock-pi-4c-rk3399_defconfig",
             },
             {
               "name": "rk3399-rockpro64",

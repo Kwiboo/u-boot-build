@@ -23,6 +23,10 @@ jobs:
         boards:
           [
             {
+              "name": "rk3328-generic",
+              "config": "generic-rk3328_defconfig",
+            },
+            {
               "name": "rk3328-nanopi-r2c",
               "config": "nanopi-r2c-rk3328_defconfig",
             },
