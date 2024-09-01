@@ -63,13 +63,8 @@ jobs:
               "variant": "RK3566",
             },
             {
-              "name": "rk3566-radxa-zero-3e",
-              "config": "radxa-zero-3e-rk3566_defconfig",
-              "variant": "RK3566",
-            },
-            {
-              "name": "rk3566-radxa-zero-3w",
-              "config": "radxa-zero-3w-rk3566_defconfig",
+              "name": "rk3566-radxa-zero-3",
+              "config": "radxa-zero-3-rk3566_defconfig",
               "variant": "RK3566",
             },
             {
@@ -93,13 +88,13 @@ jobs:
               "variant": "RK3566",
             },
             {
-              "name": "rk3568-bpi-r2-pro",
-              "config": "bpi-r2-pro-rk3568_defconfig",
+              "name": "rk3568-generic",
+              "config": "generic-rk3568_defconfig",
               "variant": "RK3568",
             },
             {
-              "name": "rk3568-generic",
-              "config": "generic-rk3568_defconfig",
+              "name": "rk3568-bpi-r2-pro",
+              "config": "bpi-r2-pro-rk3568_defconfig",
               "variant": "RK3568",
             },
             {
