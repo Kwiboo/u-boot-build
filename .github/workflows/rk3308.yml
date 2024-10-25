@@ -36,6 +36,13 @@ jobs:
               "iomux": "0",
               "baudrate": "1500000",
             },
+            {
+              "name": "rk3308-rock-s0",
+              "config": "rock-s0-rk3308_defconfig",
+              "uart": "0",
+              "iomux": "0",
+              "baudrate": "1500000",
+            },
           ]
 
     steps:
