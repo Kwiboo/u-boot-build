@@ -19,6 +19,7 @@ jobs:
     name: ${{ matrix.boards.name }}
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         boards:
           [
