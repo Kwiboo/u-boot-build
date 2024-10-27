@@ -50,7 +50,7 @@ jobs:
       - name: Toolchain
         run: |
           sudo apt-get update
-          sudo apt-get install gcc gcc-aarch64-linux-gnu python3-pyelftools confget libgnutls28-dev
+          sudo apt-get install gcc gcc-aarch64-linux-gnu python3-pyelftools confget libgnutls28-dev uuid-dev
 
       - name: Checkout rkbin - ${{ inputs.rkbin_ref }}
         uses: actions/checkout@v4
