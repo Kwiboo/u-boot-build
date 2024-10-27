@@ -102,6 +102,7 @@ jobs:
           path: u-boot
 
       - name: Build u-boot - ${{ matrix.boards.config }}
+        if: ${{ hashFiles(format('u-boot/configs/{0}', matrix.boards.config)) != '' }}
         run: |
           export ROCKCHIP_TPL=../rkbin/$(confget -f rkbin/RKBOOT/RK3588MINIALL.ini -s LOADER_OPTION FlashData)
           export BL31=../rkbin/$(confget -f rkbin/RKTRUST/RK3588TRUST.ini -s BL31_OPTION PATH)
@@ -112,6 +113,7 @@ jobs:
           tools/mkimage -l u-boot.itb
 
       - name: Upload artifacts
+        if: ${{ success() }}
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.boards.name }}

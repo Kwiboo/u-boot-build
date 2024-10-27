@@ -152,6 +152,7 @@ jobs:
           path: u-boot
 
       - name: Build u-boot - ${{ matrix.boards.config }}
+        if: ${{ hashFiles(format('u-boot/configs/{0}', matrix.boards.config)) != '' }}
         run: |
           DDRBIN=$(confget -f rkbin/RKBOOT/${{ matrix.boards.variant }}MINIALL.ini -s LOADER_OPTION FlashData)
           sed -i 's/uart baudrate=/uart baudrate=${{ matrix.boards.baudrate }}/' rkbin/tools/ddrbin_param.txt
@@ -167,6 +168,7 @@ jobs:
           tools/mkimage -l u-boot.itb
 
       - name: Upload artifacts
+        if: ${{ success() }}
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.boards.name }}
