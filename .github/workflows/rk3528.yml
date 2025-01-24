@@ -1,5 +1,5 @@
-name: Build u-boot for RK3576
-run-name: u-boot ${{ inputs.uboot_ref }} for RK3576
+name: Build u-boot for RK3528
+run-name: u-boot ${{ inputs.uboot_ref }} for RK3528
 on:
   workflow_dispatch:
     inputs:
@@ -24,8 +24,12 @@ jobs:
         boards:
           [
             {
-              "name": "rk3576-generic",
+              "name": "rk3528-generic",
               "config": "generic-rk3528_defconfig",
+            },
+            {
+              "name": "rk3528-radxa-e20c",
+              "config": "radxa-e20c-rk3528_defconfig",
             },
           ]
 
@@ -53,8 +57,8 @@ jobs:
         id: build
         if: ${{ hashFiles(format('u-boot/configs/{0}', matrix.boards.config)) != '' }}
         run: |
-          export ROCKCHIP_TPL=../rkbin/$(confget -f rkbin/RKBOOT/RK3576MINIALL.ini -s LOADER_OPTION FlashData)
-          export BL31=../rkbin/$(confget -f rkbin/RKTRUST/RK3576TRUST.ini -s BL31_OPTION PATH)
+          export ROCKCHIP_TPL=../rkbin/$(confget -f rkbin/RKBOOT/RK3528MINIALL.ini -s LOADER_OPTION FlashData)
+          export BL31=../rkbin/$(confget -f rkbin/RKTRUST/RK3528TRUST.ini -s BL31_OPTION PATH)
           cd u-boot
           make mrproper
           make ${{ matrix.boards.config }}
