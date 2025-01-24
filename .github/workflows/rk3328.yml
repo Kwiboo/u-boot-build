@@ -40,6 +40,10 @@ jobs:
               "config": "nanopi-r2s-rk3328_defconfig",
             },
             {
+              "name": "rk3328-nanopi-r2s-plus",
+              "config": "nanopi-r2s-plus-rk3328_defconfig",
+            },
+            {
               "name": "rk3328-orangepi-r1-plus",
               "config": "orangepi-r1-plus-rk3328_defconfig",
             },
@@ -54,6 +58,10 @@ jobs:
             {
               "name": "rk3328-rock-pi-e",
               "config": "rock-pi-e-rk3328_defconfig",
+            },
+            {
+              "name": "rk3328-rock-pi-e-v3",
+              "config": "rock-pi-e-v3-rk3328_defconfig",
             },
             {
               "name": "rk3328-rock64",

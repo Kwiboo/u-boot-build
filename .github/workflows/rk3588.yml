@@ -72,6 +72,10 @@ jobs:
               "config": "rock5b-rk3588_defconfig",
             },
             {
+              "name": "rk3588s-rock-5c",
+              "config": "rock-5c-rk3588s_defconfig",
+            },
+            {
               "name": "rk3588-rock-5-itx",
               "config": "rock-5-itx-rk3588_defconfig",
             },
