@@ -1,5 +1,5 @@
-name: Build u-boot for RK3576
-run-name: u-boot ${{ inputs.uboot_ref }} for RK3576
+name: Build u-boot for RK3288
+run-name: u-boot ${{ inputs.uboot_ref }} for RK3288
 on:
   workflow_dispatch:
     inputs:
@@ -24,16 +24,20 @@ jobs:
         boards:
           [
             {
-              "name": "rk3576-generic",
-              "config": "generic-rk3576_defconfig",
+              "name": "rk3288-firefly",
+              "config": "firefly-rk3288_defconfig",
             },
             {
-              "name": "rk3576-armsom-sige5",
-              "config": "sige5-rk3576_defconfig",
+              "name": "rk3288-miqi",
+              "config": "miqi-rk3288_defconfig",
             },
             {
-              "name": "rk3576-roc-pc",
-              "config": "roc-pc-rk3576_defconfig",
+              "name": "rk3288-tinker",
+              "config": "tinker-rk3288_defconfig",
+            },
+            {
+              "name": "rk3288-tinker-s",
+              "config": "tinker-s-rk3288_defconfig",
             },
           ]
 
@@ -41,7 +45,7 @@ jobs:
       - name: Toolchain
         run: |
           sudo apt-get update
-          sudo apt-get install gcc gcc-aarch64-linux-gnu python3-pyelftools confget libgnutls28-dev uuid-dev
+          sudo apt-get install gcc gcc-arm-linux-gnueabihf python3-pyelftools confget libgnutls28-dev uuid-dev
 
       - name: Checkout rkbin - ${{ inputs.rkbin_ref }}
         uses: actions/checkout@v4
@@ -61,13 +65,12 @@ jobs:
         id: build
         if: ${{ hashFiles(format('u-boot/configs/{0}', matrix.boards.config)) != '' }}
         run: |
-          export ROCKCHIP_TPL=../rkbin/$(confget -f rkbin/RKBOOT/RK3576MINIALL.ini -s LOADER_OPTION FlashData)
-          export BL31=../rkbin/$(confget -f rkbin/RKTRUST/RK3576TRUST.ini -s BL31_OPTION PATH)
+          export ROCKCHIP_TPL=../rkbin/$(confget -f rkbin/RKBOOT/RK3288MINIALL.ini -s LOADER_OPTION FlashData)
           cd u-boot
           make mrproper
           make ${{ matrix.boards.config }}
-          make KCFLAGS="-Werror" CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc)
-          tools/mkimage -l u-boot.itb
+          make KCFLAGS="-Werror" CROSS_COMPILE=arm-linux-gnueabihf- -j$(nproc)
+          tools/mkimage -l u-boot.img
 
       - name: Upload artifacts
         if: ${{ success() && steps.build.conclusion != 'skipped' }}
